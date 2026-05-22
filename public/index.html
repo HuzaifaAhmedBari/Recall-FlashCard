@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recall - Flashcards</title>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Recall</h1>
+      <p class="subtitle">Flashcards</p>
+    </header>
+
+    <section class="form-section">
+      <h2 id="form-title">Create Flashcard</h2>
+      <form id="card-form">
+        <input type="hidden" id="form-card-id" value="">
+        <div class="form-group">
+          <label for="form-question">Question</label>
+          <textarea id="form-question" required placeholder="Enter the question..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="form-answer">Answer</label>
+          <textarea id="form-answer" required placeholder="Enter the correct answer..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" id="form-submit-btn" class="btn btn-success">Add Card</button>
+          <button type="button" id="form-cancel-btn" class="btn btn-secondary" hidden>Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="list-section">
+      <h2>All Flashcards</h2>
+      <div class="table-container">
+        <table id="cards-table">
+          <thead>
+            <tr>
+              <th>Question</th>
+              <th>Answer</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="cards-table-body">
+            <tr>
+              <td colspan="3" class="empty-message">Loading cards...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+  <script src="client.js"></script>
+</body>
+</html>
