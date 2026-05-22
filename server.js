@@ -111,7 +111,9 @@ const server = http.createServer(async (req, res) => {
       const newCard = {
         id: crypto.randomUUID(),
         question: body.question,
-        answer: body.answer
+        answer: body.answer,
+        box: 1,
+        nextReviewDate: new Date().toISOString().split('T')[0]
       };
       db.cards.push(newCard);
       await saveDatabase(db);
@@ -166,6 +168,41 @@ const server = http.createServer(async (req, res) => {
     await saveDatabase(db);
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(deletedCard));
+    return;
+  }
+
+  if (pathname === '/api/cards/review' && req.method === 'POST') {
+    try {
+      const body = await getRequestBody(req);
+      if (!body.id || body.correct === undefined) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'ID and correct status are required' }));
+        return;
+      }
+      const cardIndex = db.cards.findIndex(c => c.id === body.id);
+      if (cardIndex === -1) {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Card not found' }));
+        return;
+      }
+      const card = db.cards[cardIndex];
+      if (body.correct) {
+        card.box = Math.min(card.box + 1, 5);
+      } else {
+        card.box = 1;
+      }
+      const intervals = { 1: 1, 2: 2, 3: 4, 4: 7, 5: 14 };
+      const days = intervals[card.box];
+      const nextDate = new Date();
+      nextDate.setDate(nextDate.getDate() + days);
+      card.nextReviewDate = nextDate.toISOString().split('T')[0];
+      await saveDatabase(db);
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(card));
+    } catch (err) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Invalid request' }));
+    }
     return;
   }
 

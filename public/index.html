@@ -3,15 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recall - Flashcards</title>
+  <title>Recall - Spaced Repetition Flashcards</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
     <header>
       <h1>Recall</h1>
-      <p class="subtitle">Flashcards</p>
+      <p class="subtitle">Spaced Repetition Flashcards</p>
     </header>
+
+    <section class="stats-card">
+      <h2>Study Statistics</h2>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <span class="stat-label">Box 1</span>
+          <span id="stat-box-1" class="stat-value">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Box 2</span>
+          <span id="stat-box-2" class="stat-value">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Box 3</span>
+          <span id="stat-box-3" class="stat-value">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Box 4</span>
+          <span id="stat-box-4" class="stat-value">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Box 5</span>
+          <span id="stat-box-5" class="stat-value">0</span>
+        </div>
+      </div>
+      <div class="due-summary">
+        <p id="due-message">Loading due cards...</p>
+        <button id="start-study-btn" class="btn btn-primary hidden">Start Study Session</button>
+      </div>
+    </section>
+
+    <section id="study-section" class="card-viewport hidden">
+      <div class="card-header">
+        <span id="study-card-progress" class="card-count">Card 0 of 0</span>
+      </div>
+      <div class="flashcard">
+        <div class="flashcard-front">
+          <h3>Question</h3>
+          <p id="study-question">Question text goes here?</p>
+        </div>
+        <div id="study-answer-container" class="flashcard-back hidden">
+          <h3>Answer</h3>
+          <p id="study-answer">Answer text goes here.</p>
+        </div>
+      </div>
+      <div class="study-controls">
+        <button id="reveal-btn" class="btn btn-primary">Reveal Answer</button>
+        <div id="review-actions" class="hidden">
+          <button id="wrong-btn" class="btn btn-danger">Got it Wrong (Box 1)</button>
+          <button id="right-btn" class="btn btn-success">Got it Right (+1 Box)</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="study-complete-section" class="completion-viewport hidden">
+      <div class="success-icon">Done</div>
+      <h2>Study Session Complete!</h2>
+      <p>You have reviewed all the cards that are due for today. Keep up the great work!</p>
+      <button id="close-study-btn" class="btn btn-secondary">Close Session</button>
+    </section>
 
     <section class="form-section">
       <h2 id="form-title">Create Flashcard</h2>
@@ -19,7 +79,7 @@
         <input type="hidden" id="form-card-id" value="">
         <div class="form-group">
           <label for="form-question">Question</label>
-          <textarea id="form-question" required placeholder="Enter the question..."></textarea>
+          <textarea id="form-question" required placeholder="Enter the study question..."></textarea>
         </div>
         <div class="form-group">
           <label for="form-answer">Answer</label>
@@ -27,7 +87,7 @@
         </div>
         <div class="form-actions">
           <button type="submit" id="form-submit-btn" class="btn btn-success">Add Card</button>
-          <button type="button" id="form-cancel-btn" class="btn btn-secondary" hidden>Cancel</button>
+          <button type="button" id="form-cancel-btn" class="btn btn-secondary hidden">Cancel</button>
         </div>
       </form>
     </section>
@@ -40,12 +100,14 @@
             <tr>
               <th>Question</th>
               <th>Answer</th>
+              <th>Box</th>
+              <th>Next Review</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody id="cards-table-body">
             <tr>
-              <td colspan="3" class="empty-message">Loading cards...</td>
+              <td colspan="5" class="empty-message">Loading cards...</td>
             </tr>
           </tbody>
         </table>
