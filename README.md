@@ -2,12 +2,12 @@
 
 Install Node.js, then run:
 
-```powershell
+```bash
 git clone https://github.com/HuzaifaAhmedBari/Recall-FlashCard.git
 cd Recall-FlashCard
 ```
 
-```powershell
+```bash
 node server.js
 ```
 
